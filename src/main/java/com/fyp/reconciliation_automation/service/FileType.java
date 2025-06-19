@@ -1,0 +1,7 @@
+package com.fyp.reconciliation_automation.service;
+
+public enum FileType {
+
+    providus_bank_statement,funds_transfer,premium_trust_bank_vps,providus_bank_vps,premium_trust_bank_statement,credit_failed,credit_successful,debit_advice_failed,debit_failed,debit_successful,debit_advice_successful,temporary_metabase,metabase_collections
+
+}
