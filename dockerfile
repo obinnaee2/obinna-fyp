@@ -1,33 +1,14 @@
-FROM alpine:3.19.1
+# Use a lightweight JDK base image
+FROM eclipse-temurin:17-jdk-alpine
 
-# Install OpenJDK 17
-RUN apk --update add openjdk17 \
-    && rm -rf /var/cache/apk/*
-
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
-# Expose application port
-EXPOSE 9091
+# Copy the built jar file into the container (adjust if your jar name changes)
+COPY target/*.jar app.jar
 
-# Set environment variables
-ENV PORT=9091
-ENV JAVA_OPTS="-Xms1024m -Xmx1300m"
+# Expose the port your app runs on (usually 8080 for Spring Boot)
+EXPOSE 8080
 
-# Copy application configuration and JAR files
-COPY 78ConfigFiles/78financials ./appconfig/78financials
-COPY target ./target
-RUN chmod 777 ./target
-
-# Copy Elastic APM agent
-COPY --from=docker.elastic.co/observability/apm-agent-java:1.45.0 /usr/agent/elastic-apm-agent.jar /elastic-apm-agent.jar
-
-# Set application service configuration path
-ENV APP_SERVICE_CONFIG=/app/appconfig
-
-# Remove specific configuration file
-RUN rm ./appconfig/78financials/config/routing.properties
-
-# Modified ENTRYPOINT with increased heap size
-ENTRYPOINT ["java", "-Xms1g", "-Xmx3g", "-javaagent:/elastic-apm-agent.jar", "-jar", "./target/reconciliation-automation-service-0.0.1-SNAPSHOT.jar"]
-
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "app.jar"]
