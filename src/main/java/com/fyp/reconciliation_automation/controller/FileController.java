@@ -439,15 +439,15 @@ public class FileController {
             ));
         }
 
-        Map<String, Object> documentsStatus = fileOperationsService.checkOtherDocumentsUploadStatus(uploadDate, reportType);
-        if (!(Boolean) documentsStatus.get("allUploaded")) {
-            List<String> missingDocs = (List<String>) documentsStatus.get("missingFiles");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(
-                    "You cannot call the download API yet; the following required documents are missing: " + missingDocs,
-                    String.valueOf(HttpStatus.BAD_REQUEST.value()),
-                    Map.of("Missing Documents", missingDocs, "Upload Date", uploadDate, "Report Type", reportType.name())
-            ));
-        }
+//        Map<String, Object> documentsStatus = fileOperationsService.checkOtherDocumentsUploadStatus(uploadDate, reportType);
+//        if (!(Boolean) documentsStatus.get("allUploaded")) {
+//            List<String> missingDocs = (List<String>) documentsStatus.get("missingFiles");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(
+//                    "You cannot call the download API yet; the following required documents are missing: " + missingDocs,
+//                    String.valueOf(HttpStatus.BAD_REQUEST.value()),
+//                    Map.of("Missing Documents", missingDocs, "Upload Date", uploadDate, "Report Type", reportType.name())
+//            ));
+//        }
 
         executorService.submit(() -> {
             try {
